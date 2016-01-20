@@ -12,6 +12,7 @@ import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.mvc.Action
 import play.api.mvc.Controller
 import models.Dog
+import play.api.libs.json._
 
 
 class Application @Inject() (catDao: CatDAO, dogDao: DogDAO) extends Controller {
@@ -24,10 +25,22 @@ class Application @Inject() (catDao: CatDAO, dogDao: DogDAO) extends Controller 
 	}
 
 	def cats = Action.async {
+
 		catDao.all().map {
 			case (cats) => 
 				Ok(views.html.cats(cats)) 
 		}
+
+	}
+
+	def jsonCats = Action.async {
+
+		catDao.all().map{ s =>
+			Ok(
+				JsArray(s.map(t =>Json.obj("sender" -> t.name, "content" -> t.color)))
+			)
+		}
+
 	}
 
 	val catForm = Form(

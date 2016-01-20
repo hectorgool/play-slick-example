@@ -5,6 +5,8 @@
 # Home page
 GET     /                           controllers.Application.index
 
+GET     /cats                       controllers.Application.cats
+
 # Home page
 POST    /insert/cat                 controllers.Application.insertCat
 POST    /insert/dog                 controllers.Application.insertDog

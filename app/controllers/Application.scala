@@ -21,20 +21,13 @@ class Application @Inject() (catDao: CatDAO, dogDao: DogDAO) extends Controller 
 			case (cats, dogs) => 
 				Ok(views.html.index(cats, dogs)) 
 		}
-		/*
+	}
+
+	def cats = Action.async {
 		catDao.all().map {
 			case (cats) => 
-				Ok(views.html.index(cats.name)) 
+				Ok(views.html.cats(cats)) 
 		}
-		*/
-		/*
-		catDao.all().map { cats =>
-      		if(cats.size > 1) throw new IllegalStateException("...")
-      			Ok(views.html.index(cats.name))
-      	}
-      	*/
-
-
 	}
 
 	val catForm = Form(

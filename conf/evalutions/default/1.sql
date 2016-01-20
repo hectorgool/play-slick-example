@@ -1,0 +1,16 @@
+# --- !Ups
+
+CREATE TABLE `CAT` (
+	`NAME` VARCHAR(100) NOT NULL PRIMARY KEY,
+	`COLOR` VARCHAR(100)
+);
+
+CREATE TABLE `DOG` (
+	`NAME` VARCHAR(100) NOT NULL PRIMARY KEY,
+	`COLOR` VARCHAR(100)
+);
+
+# --- !Downs
+
+drop table "CAT";
+drop table "DOG";

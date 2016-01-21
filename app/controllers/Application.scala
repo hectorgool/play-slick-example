@@ -43,6 +43,16 @@ class Application @Inject() (catDao: CatDAO, dogDao: DogDAO) extends Controller 
 
 	}
 
+	def jsonCatsSQL = Action.async {
+
+		catDao.sqlQuery().map{ s =>
+			Ok(
+				JsArray(s.map(t =>Json.obj("sender" -> t.name, "content" -> t.color)))
+			)
+		}
+
+	}
+
 	val catForm = Form(
 		mapping(
 		  "name" -> text(),

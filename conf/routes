@@ -7,6 +7,7 @@ GET     /                           controllers.Application.index
 
 GET     /cats                       controllers.Application.cats
 GET     /jcats                      controllers.Application.jsonCats
+GET     /jcatssql                   controllers.Application.jsonCatsSQL
 
 # Home page
 POST    /insert/cat                 controllers.Application.insertCat

@@ -1,0 +1,37 @@
+
+
+
+    case class Message(senderId: Id[UserTable],
+                       content: String,
+                       ts: DateTime,
+                       roomId: Option[Id[RoomTable]] = None,
+                       toId: Option[Id[UserTable]]   = None,
+                       id: Id[MessageTable]          = Id(0L) )
+                       
+
+   implicit val GetUserId    =
+     GetResult(r => Id[UserTable](r.nextLong))
+
+   implicit val GetMessageId =
+     GetResult(r => Id[MessageTable](r.nextLong))
+
+   implicit val GetOptionalUserId =
+     GetResult(r => r.nextLongOption.map(id => Id[UserTable](id)))
+
+   implicit val GetOptionalRoomId =
+     GetResult(r => r.nextLongOption.map(id => Id[RoomTable](id)))
+
+   implicit val GetMessage = GetResult(r =>
+      Message(senderId  = r.<<,
+              content   = r.<<,
+              ts        = r.<<,
+              id        = r.<<,
+              roomId    = r.<<?,
+              toId      = r.<<?) )
+
+   val results = exec {
+     sql""" select * from "message" """.as[Message]
+   }
+
+   results.foreach(result => println(result))
+

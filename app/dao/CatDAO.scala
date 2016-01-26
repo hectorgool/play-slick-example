@@ -25,12 +25,14 @@ class CatDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider) e
 	
    	implicit val GetCat = GetResult(r =>
     	Cat(
-    		name  = r.<<,
-            color = r.<<)
-    	)
+    		name     = r.<<,
+            color    = r.<<,
+            activate = r.<<
+		)
+    )
    	
 	def sqlQuery(): Future[Seq[Cat]] = db.run(
-		sql"""select NAME, COLOR from CAT """.as[Cat]
+		sql"""select NAME, COLOR, ACTIVATE from CAT """.as[Cat]
 	)
 	
 
@@ -38,7 +40,9 @@ class CatDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider) e
 
 		def name = column[String]("NAME", O.PrimaryKey)
 		def color = column[String]("COLOR")
-		def * = (name, color) <> (Cat.tupled, Cat.unapply _)
+		def activate = column[Boolean]("ACTIVATE")
+		def * = (name, color, activate) <> (Cat.tupled, Cat.unapply _)
+		//def * = (name, color) <> (Cat.tupled, Cat.unapply _)
 
 	}
 

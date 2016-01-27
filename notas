@@ -35,3 +35,18 @@
 
    results.foreach(result => println(result))
 
+  override def list(page: Int = 0, pageSize: Int = 10, orderBy: Int = 1, filter: String = "%"): Future[Page[Employee]] = {
+    try {
+      val offset = pageSize * page
+      val query =
+        (for {
+          employee <- employees if employee.name.toLowerCase like filter.toLowerCase
+        } yield (employee)).drop(offset).take(pageSize)
+      val totalRows = count(filter)
+      val result = db.run(query.result)
+      result flatMap (employees => totalRows map (rows => Page(employees, page, offset, rows)))
+    } finally { db.close() }
+  }
+
+  https://github.com/gupta-himanshu/play-reactive-slick/blob/master/app/models/DAO.scala
+  

@@ -54,9 +54,10 @@ class Application @Inject() (catDao: CatDAO, dogDao: DogDAO) extends Controller 
 
 	val catForm = Form(
 		mapping(
-		  "name"     -> text(),
-		  "color"    -> text(),
-		  "activate" -> boolean
+			"id"       -> optional(longNumber),
+		  	"name"     -> text(),
+		  	"color"    -> text(),
+		  	"activate" -> boolean
 		)(Cat.apply)(Cat.unapply)
 	)
 

@@ -17,14 +17,40 @@ class CatDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider) e
 	
 	import driver.api._
 
-	private val Cats = TableQuery[CatsTable]
+	val Cats = TableQuery[CatsTable]
 
 	def all(): Future[Seq[Cat]] = db.run(Cats.result)
 
-	def insert(cat: Cat): Future[Unit] = db.run(Cats += cat).map { _ => () }
+	def insert(cat: Cat): Future[Unit] =
+    	try db.run(Cats += cat).map { _ => () }
+    	finally db.close
+
+    def filterQuery(id: Long) =
+    	Cats.filter(_.id === id)
 	
+	def count(filter: String): Future[Int] =
+    	try db.run(Cats.filter(_.name.toLowerCase like filter.toLowerCase()).length.result)
+    	finally db.close
+
+	def count: Future[Int] =
+    	try db.run(Cats.length.result)
+    	finally db.close
+
+	def findById(id: Long): Future[Cat] =
+    	try db.run(filterQuery(id).result.head)
+    	finally db.close
+
+    def update(id: Long, cat: Cat): Future[Int] =
+    	try db.run(filterQuery(id).update(cat))
+    	finally db.close
+
+	def delete(id: Long): Future[Int] =
+    	try db.run(filterQuery(id).delete)
+    	finally db.close    	
+
    	implicit val GetCat = GetResult(r =>
     	Cat(
+    		id       = r.<<,
     		name     = r.<<,
             color    = r.<<,
             activate = r.<<
@@ -36,12 +62,13 @@ class CatDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider) e
 	)
 	
 
-	private class CatsTable(tag: Tag) extends Table[Cat](tag, "CAT") {
+	class CatsTable(tag: Tag) extends Table[Cat](tag, "CAT") {
 
-		def name = column[String]("NAME", O.PrimaryKey)
+		def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
+		def name = column[String]("NAME")
 		def color = column[String]("COLOR")
 		def activate = column[Boolean]("ACTIVATE")
-		def * = (name, color, activate) <> (Cat.tupled, Cat.unapply _)
+		def * = (id.?, name, color, activate) <> (Cat.tupled, Cat.unapply _)
 		//def * = (name, color) <> (Cat.tupled, Cat.unapply _)
 
 	}

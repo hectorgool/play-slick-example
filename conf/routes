@@ -13,6 +13,8 @@ GET     /jcatssql                   controllers.Application.jsonCatsSQL
 POST    /insert/cat                 controllers.Application.insertCat
 POST    /insert/dog                 controllers.Application.insertDog
 
+GET     /api/products                   controllers.Application.listProducts
+
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

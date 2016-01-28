@@ -4,13 +4,13 @@ package controllers
 import dao.CatDAO
 import dao.DogDAO
 import javax.inject.Inject
-import models.Cat
+import models._
+import models.JsonFormats.itemProduct
 import play.api.data._
-																															import play.api.data.Forms._
+import play.api.data.Forms._
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.mvc.Action
 import play.api.mvc.Controller
-import models.Dog
 import play.api.libs.json._
 
 
@@ -77,5 +77,18 @@ class Application @Inject() (catDao: CatDAO, dogDao: DogDAO) extends Controller 
 		val dog: Dog = dogForm.bindFromRequest.get
 		dogDao.insert(dog).map(_ => Redirect(routes.Application.index))
 	}
+
+	val products = Seq(
+		Product("733733-421", "HP ProLiant DL360p Gen8"),
+		Product("7147H2G", "IBM System x x3690 X5"),
+		Product("R630-3552", "DELL PowerEdge R630"),
+		Product("RX-2280I", "Supermicro RTG RX-2280I"),
+		Product("MB449D/A", "Apple Xserve")
+	)
+
+	def listProducts = Action {
+		Ok(Json.toJson(products))
+	}
+
 
 }

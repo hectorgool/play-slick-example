@@ -19,7 +19,8 @@ class CatDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider) e
 
 	val Cats = TableQuery[CatsTable]
 
-	def all(): Future[Seq[Cat]] = db.run(Cats.result)
+	def all(): Future[Seq[Cat]] = 
+		db.run(Cats.result)
 
 	def insert(cat: Cat): Future[Unit] =
     	try db.run(Cats += cat).map { _ => () }

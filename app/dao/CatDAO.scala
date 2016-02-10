@@ -59,16 +59,16 @@ class CatDAO @Inject()(protected val dbConfigProvider: DatabaseConfigProvider) e
     )
    	
 	def sqlQuery(): Future[Seq[Cat]] = db.run(
-		sql"""select NAME, COLOR, ACTIVATE from CAT """.as[Cat]
+		sql"""select name, color, activate from cat """.as[Cat]
 	)
 	
 
-	class CatsTable(tag: Tag) extends Table[Cat](tag, "CAT") {
+	class CatsTable(tag: Tag) extends Table[Cat](tag, "cat") {
 
 		def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
-		def name = column[String]("NAME")
-		def color = column[String]("COLOR")
-		def activate = column[Boolean]("ACTIVATE")
+		def name = column[String]("name")
+		def color = column[String]("color")
+		def activate = column[Boolean]("activate")
 		def * = (id.?, name, color, activate) <> (Cat.tupled, Cat.unapply _)
 		//def * = (name, color) <> (Cat.tupled, Cat.unapply _)
 

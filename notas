@@ -50,3 +50,8 @@
 
   https://github.com/gupta-himanshu/play-reactive-slick/blob/master/app/models/DAO.scala
   
+
+Execution exception
+
+[RejectedExecutionException: Task slick.backend.DatabaseComponent$DatabaseDef$$anon$2@10bb5141 rejected from java.util.concurrent.ThreadPoolExecutor@4ea15d9b[Terminated, pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 2]]
+  

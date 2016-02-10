@@ -12,6 +12,7 @@ import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import play.api.mvc.Action
 import play.api.mvc.Controller
 import play.api.libs.json._
+//import play.api.data.format.Formats._
 
 
 class Application @Inject() (catDao: CatDAO, dogDao: DogDAO) extends Controller {
@@ -70,11 +71,12 @@ class Application @Inject() (catDao: CatDAO, dogDao: DogDAO) extends Controller 
 
 	def insertCat = Action.async { implicit request =>
 		val cat: Cat = catForm.bindFromRequest.get
+		println("cat: " + cat )
 		catDao.insert(cat).map(_ => Redirect(routes.Application.index))
 	}
 
 	def insertDog = Action.async { implicit request =>
-		val dog: Dog = dogForm.bindFromRequest.get
+		val dog: Dog = dogForm.bindFromRequest.get		
 		dogDao.insert(dog).map(_ => Redirect(routes.Application.index))
 	}
 

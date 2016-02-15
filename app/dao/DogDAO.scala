@@ -21,10 +21,10 @@ class DogDAO @Inject()(@NamedDatabase("mydb") protected val dbConfigProvider: Da
 
 	def insert(dog: Dog): Future[Unit] = db.run(Dogs += dog).map { _ => () }
 
-	private class DogsTable(tag: Tag) extends Table[Dog](tag, "DOG") {
+	private class DogsTable(tag: Tag) extends Table[Dog](tag, "dog") {
 
-		def name = column[String]("NAME", O.PrimaryKey)
-		def color = column[String]("COLOR")
+		def name = column[String]("name", O.PrimaryKey)
+		def color = column[String]("color")
 		def * = (name, color) <> (Dog.tupled, Dog.unapply _)
 
 	}

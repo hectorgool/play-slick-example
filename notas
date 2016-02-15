@@ -55,3 +55,57 @@ Execution exception
 
 [RejectedExecutionException: Task slick.backend.DatabaseComponent$DatabaseDef$$anon$2@10bb5141 rejected from java.util.concurrent.ThreadPoolExecutor@4ea15d9b[Terminated, pool size = 0, active threads = 0, queued tasks = 0, completed tasks = 2]]
   
+
+
+CREATE DATABASE "play-slick-example" WITH ENCODING 'UTF8';
+CREATE USER "santo" WITH PASSWORD 'asdfasdf';
+GRANT ALL ON DATABASE "play-slick-example" TO santo;
+
+
+CREATE SEQUENCE cat_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MAXVALUE
+    NO MINVALUE
+    CACHE 1;
+
+CREATE TABLE cat (
+    id bigint NOT NULL,
+    name text,
+    color text
+);
+
+ALTER TABLE public.cat_id_seq OWNER TO santo;
+ALTER TABLE public.cat OWNER TO santo;
+
+slick {
+  dbs {
+    default {
+      #driver = "slick.driver.PostgresDriver$",
+      db {
+        connectionPool = disabled
+        url = jdbc:postgresql:play-slick-example
+        driver = org.postgresql.Driver
+        keepAliveConnection = true
+        users = santo
+        password = asdfadsf
+      } 
+    }
+  }
+}
+
+slick {
+  dbs {
+    mydb {
+      #driver = "slick.driver.PostgresDriver$",
+      db {
+        connectionPool = disabled
+        url = jdbc:postgresql:mydb
+        driver = org.postgresql.Driver
+        keepAliveConnection = true
+        users = santo
+        password = asdfadsf           
+      } 
+    }
+  }
+}      
